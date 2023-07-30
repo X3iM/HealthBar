@@ -3,9 +3,11 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    public Action OnHealthChanged;
+    public Action HealthChangedEvent;
     
     [SerializeField] private float _health = 100f;
+    [SerializeField] private float _damage = 10f;
+    [SerializeField] private float _heal = 10f;
     private float _maxHealth;
 
     private void Awake()
@@ -18,15 +20,15 @@ public class Player : MonoBehaviour
 
     public void Damage()
     {
-        float health = _health - 10;
+        float health = _health - _damage;
         _health = Mathf.Clamp(health, 0, _maxHealth);
-        OnHealthChanged();
+        HealthChangedEvent();
     }
     
     public void Heal()
     {
-        float health = _health + 10;
+        float health = _health + _heal;
         _health = Mathf.Clamp(health, 0, _maxHealth);
-        OnHealthChanged();
+        HealthChangedEvent();
     }
 }
