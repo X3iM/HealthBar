@@ -1,15 +1,16 @@
 using System;
+using UnityEngine;
 
-[Serializable]
-public class Player
+public class Player : MonoBehaviour
 {
-    private float _health;
+    public Action OnHealthChanged;
+    
+    [SerializeField] private float _health = 100f;
     private float _maxHealth;
 
-    public Player(float health)
+    private void Awake()
     {
-        _health = health;
-        _maxHealth = health;
+        _maxHealth = _health;
     }
 
     public float Health => _health;
@@ -17,17 +18,15 @@ public class Player
 
     public void Damage()
     {
-        if (_health > 0)
-        {
-            _health -= 10;
-        }
+        float health = _health - 10;
+        _health = Mathf.Clamp(health, 0, _maxHealth);
+        OnHealthChanged();
     }
     
     public void Heal()
     {
-        if (_health < _maxHealth)
-        {
-            _health += 10;
-        }
+        float health = _health + 10;
+        _health = Mathf.Clamp(health, 0, _maxHealth);
+        OnHealthChanged();
     }
 }
